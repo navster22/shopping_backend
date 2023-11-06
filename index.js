@@ -10,6 +10,8 @@ const app = express()
 app.use(cors())
 mongoConnection(process.env.URI)
 
+app.use('/files',express.static('uploads'))
+
 initializePassport(passport);
 
 app.use(passport.initialize())
