@@ -57,10 +57,10 @@ const loginUser = async (req,res) => {
                 id: user._id
             }
             const token = jwt.sign(payload, process.env.JWT_KEY,{expiresIn: "1d"})
+            res.cookie('token', token);
             return res.status(200).json({
                 statusCode: 200,
-                message: 'User login successful',
-                data: `Bearer ${token}`
+                message: 'User login successful'
             })
         }
         return res.status(403).json({
