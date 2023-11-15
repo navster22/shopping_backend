@@ -29,9 +29,11 @@ router.post('/add-banner', passport.authenticate('jwt', {session: false}), addBa
 
 router.get('/get-banners',getBanners)
 
+router.get('/get-banner/:bannerId',getBanners)
+
 router.delete('/delete-banner/:bannerId', passport.authenticate('jwt', {session: false}),deleteBanner)
 
-router.put('/update-banners/:bannerId', passport.authenticate('jwt', {session: false}),updateBanner)
+router.put('/update-banner/:bannerId', passport.authenticate('jwt', {session: false}),updateBanner)
 
 router.post('/add-product', passport.authenticate('jwt', {session: false}),addProduct)
 
@@ -41,12 +43,27 @@ router.put('/update-product/:productId', passport.authenticate('jwt', {session: 
 
 router.post('/upload', passport.authenticate('jwt', {session: false}), upload.single('banner'),(req, res) => {
     console.log(req.file)
-    return res.status(200).json({
-        statusCode: 200,
+    return res.status(201).json({
+        statusCode: 201,
         message: 'File uploaded successfully',
         data: `${process.env.BASE_URL}/files/${req.file.filename}`
     })
 })
+
+router.post('/upload-product-images', passport.authenticate('jwt', {session: false}), upload.any('productImages'),(req, res) => {
+    console.log(req.files)
+    let uploadedProductImages = {}
+    req.files.forEach((item,index) => {
+        uploadedProductImages[`productImage${index}`] = `${process.env.BASE_URL}/files/${item.filename}`
+    })
+    return res.status(201).json({
+        statusCode: 201,
+        message: 'Product images uploaded successfully',
+        data: uploadedProductImages
+    })
+})
+
+
 
 
 module.exports = router

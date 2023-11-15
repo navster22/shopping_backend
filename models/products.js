@@ -21,6 +21,10 @@ const productSchema = new Schema({
     discountedPrice: {
         type: Number,
         required: true
+    },
+    productImages: {
+        type: Object,
+        required: true
     }
 },{timestamps: true})
 

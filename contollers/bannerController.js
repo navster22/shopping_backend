@@ -29,8 +29,10 @@ const addBanner = async (req,res) => {
 
 const getBanners = async (req,res) => {
     try{
+        let bannerSearchQuery = {};
+        if(req.params.bannerId) bannerSearchQuery = {_id: req.params.bannerId}
         console.log('Log for getBanners:',req.body)
-        Banners.find()
+        Banners.find(bannerSearchQuery)
         .then(result => {
             return res.status(200).json({
                 statusCode: 200,
