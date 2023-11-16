@@ -39,6 +39,8 @@ router.post('/add-product', passport.authenticate('jwt', {session: false}),addPr
 
 router.get('/get-products',getProducts)
 
+router.get('/get-product/:productId',getProducts)
+
 router.put('/update-product/:productId', passport.authenticate('jwt', {session: false}),updateProduct)
 
 router.post('/upload', passport.authenticate('jwt', {session: false}), upload.single('banner'),(req, res) => {

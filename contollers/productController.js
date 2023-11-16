@@ -30,7 +30,9 @@ const addProduct = async (req,res) => {
 const getProducts = async (req,res) => {
     try{
         console.log('Log for getProducts:',req.body)
-        Products.find()
+        let productSearchQuery = {};
+        if(req.params.productId) productSearchQuery = {_id: req.params.productId}
+        Products.find(productSearchQuery)
         .then(result => {
             return res.status(200).json({
                 statusCode: 200,
