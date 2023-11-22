@@ -1,11 +1,13 @@
 const express = require('express')
-const { createUser,loginUser, getUsers } = require('../contollers/userController')
+const { createUser,loginUser, getUsers, validateEmail, validateOtp, resetpassword } = require('../contollers/userController')
 const passport = require('passport')
 const multer = require("multer")
 const { addBanner, getBanners, updateBanner, deleteBanner } = require('../contollers/bannerController')
 const { updateProduct, getProducts, addProduct } = require('../contollers/productController')
 
 const router = express.Router()
+
+const cartRoutes = require('./cartRoutes')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -39,6 +41,12 @@ router.post('/add-product', passport.authenticate('jwt', {session: false}),addPr
 
 router.get('/get-products',getProducts)
 
+router.get('/validate-email',validateEmail)
+
+router.get('/validate-otp',validateOtp)
+
+router.post('/reset-password',resetpassword)
+
 router.get('/get-product/:productId',getProducts)
 
 router.put('/update-product/:productId', passport.authenticate('jwt', {session: false}),updateProduct)
@@ -66,6 +74,7 @@ router.post('/upload-product-images', passport.authenticate('jwt', {session: fal
 })
 
 
+router.use(cartRoutes)
 
 
 module.exports = router

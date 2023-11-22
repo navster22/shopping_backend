@@ -1,14 +1,14 @@
-const Products = require('../models/products')
+const Carts = require("../models/carts")
 
-const addProduct = async (req,res) => {
+const addToCart = async (req,res) => {
     try{
-        console.log('Log for addProduct:',req.body)
-        const newProduct = new Products(req.body)
-        newProduct.save()
+        console.log('Log for addToCart:',req.query)
+        const newCartProduct = new Carts({productId: req.query.productId})
+        newCartProduct.save()
         .then(result => {
             return res.status(201).json({
                 statusCode: 201,
-                message: 'Product added successfully'
+                message: 'Product added to cart successfully'
             })
         })
         .catch(err => {
@@ -27,29 +27,14 @@ const addProduct = async (req,res) => {
     }
 }
 
-const getProducts = async (req,res) => {
+const getCartProducts = async (req,res) => {
     try{
-        console.log('Log for getProducts:',req.body)
-
-        const {category, minPrice, maxPrice} = req.query;
-
-        const filter = {}
-
-        if(category) {
-            filter.category = category
-        }
-
-        if(minPrice && maxPrice) {
-            filter.discountedPrice = {$gte: parseFloat(minPrice), $lte: parseFloat(maxPrice)}
-        }
-
-        let productSearchQuery = {};
-        if(req.params.productId) productSearchQuery = {_id: req.params.productId}
-        Products.find({...productSearchQuery,...filter})
+        console.log('Log for getCartProducts:',req.body)
+        Carts.find()
         .then(result => {
             return res.status(200).json({
                 statusCode: 200,
-                message: 'Products fetched successfully',
+                message: 'Cart products fetched successfully',
                 data: result
             })
         })
@@ -69,15 +54,15 @@ const getProducts = async (req,res) => {
     }
 }
 
-const updateProduct = async (req,res) => {
+const deleteCartProduct = async (req,res) => {
     try{
-        console.log('Log for updateProduct:',req.body)
-        const productId = req.params.productId
-        Products.findOneAndUpdate({_id: productId},req.body)
+        console.log('Log for deleteCartProduct:',req.params)
+        const cartProductId = req.params.cartProductId
+        Carts.findOneAndRemove({_id: cartProductId})
         .then(result => {
             return res.status(200).json({
                 statusCode: 200,
-                message: 'Product updated successfully'
+                message: 'Product deleted successfully from cart'
             })
         })
         .catch(err => {
@@ -94,10 +79,10 @@ const updateProduct = async (req,res) => {
             message: 'Server error'
         })
     }
-}
+} 
 
 module.exports = {
-    addProduct,
-    getProducts,
-    updateProduct
+    addToCart,
+    getCartProducts,
+    deleteCartProduct
 }
