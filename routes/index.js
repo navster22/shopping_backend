@@ -8,6 +8,7 @@ const { updateProduct, getProducts, addProduct } = require('../contollers/produc
 const router = express.Router()
 
 const cartRoutes = require('./cartRoutes')
+const googleAuthRoutes = require('./googleLoginRoutes')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -75,6 +76,7 @@ router.post('/upload-product-images', passport.authenticate('jwt', {session: fal
 
 
 router.use(cartRoutes)
+router.use(googleAuthRoutes)
 
 
 module.exports = router
