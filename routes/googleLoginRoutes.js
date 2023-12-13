@@ -1,22 +1,21 @@
 const express = require('express')
-const passport = require('passport')
+const passport = require('passport');
+const { isAuthenticatedCustomer } = require('../passport');
 
 const router = express.Router()
 
-router.get('/auth/google',passport.authenticate('google',{ scope: ['https://www.googleapis.com/auth/plus.login']}))
+// router.get('/auth/google',passport.authenticate('google',{ scope: ['https://www.googleapis.com/auth/plus.login']}))
+
+router.get("/auth/google", passport.authenticate("google", { scope: ["profile"] }));
 
 router.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/autherised-google-user')
+  passport.authenticate('google', { successRedirect: "", failureRedirect: '/' })
+);
 
-});
-
-router.get('/autherised-google-user', (req,res) => {
-    console.log(req.session.user)
+router.get('/autherised-google-user', isAuthenticatedCustomer, (req,res) => {
+    console.log('Here is our session ===>',req.session)
     return res.status(200).json({
-        data: req.session.user
+        data: req.user
     })
 })
 
