@@ -9,6 +9,7 @@ const router = express.Router()
 
 const cartRoutes = require('./cartRoutes')
 const googleAuthRoutes = require('./googleLoginRoutes')
+const orderRoutes = require('./orderRoutes')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -77,6 +78,6 @@ router.post('/upload-product-images', passport.authenticate('jwt', {session: fal
 
 router.use(cartRoutes)
 router.use(googleAuthRoutes)
-
+router.use(orderRoutes)
 
 module.exports = router
