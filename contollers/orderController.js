@@ -11,12 +11,17 @@ const createOrderFromCart = async (req,res) => {
         const order = new Orders({
             customerId: req.body.customerId,
             items: cart.items.map(item => ({productId: item.productId})),
-            orderValue: req.body.total
+            orderValue: req.body.total,
+            razorpay_payment_id: req.body.razorpay_payment_id,
+            razorpay_order_id: req.body.razorpay_order_id,
+            razorpay_signature: req.body.razorpay_signature
         })
 
         await order.save()
-        .then(result => {
+        .then( async result => {
             console.log(result)
+            cart.items = []
+            await cart.save()
             return res.status(200).json({
                 statusCode: 200,
                 message: 'Order created for cart successfully'
@@ -75,7 +80,10 @@ const buyNowOrder = async (req,res) => {
         const order = new Orders({
             customerId: req.body.customerId,
             items: [{productId: req.body.productId}],
-            orderValue: req.body.total
+            orderValue: req.body.total,
+            razorpay_payment_id: req.body.razorpay_payment_id,
+            razorpay_order_id: req.body.razorpay_order_id,
+            razorpay_signature: req.body.razorpay_signature
         })
 
         await order.save()

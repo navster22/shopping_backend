@@ -9,7 +9,7 @@ const router = express.Router()
 router.get("/auth/google", passport.authenticate("google", { scope: ["profile"] }));
 
 router.get('/auth/google/callback', 
-  passport.authenticate('google', { successRedirect: "", failureRedirect: '/' })
+  passport.authenticate('google', { successRedirect: "http://127.0.0.1:3000", failureRedirect: '/' })
 );
 
 router.get('/autherised-google-user', isAuthenticatedCustomer, (req,res) => {

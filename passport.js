@@ -36,8 +36,8 @@ const initializeGoogleAuth = (passport) =>{
        function(accessToken, refreshToken, profile, done) {
         console.log('Profile we got at initialization of oAuth ',profile)
         console.log('Token and refresh token of oAuth ', accessToken, refreshToken)
-        // findOrCreateCustomer(profile,done)
-        done(null,profile)
+        findOrCreateCustomer(profile,done)
+        // done(null,profile)
       }
     ));
 
